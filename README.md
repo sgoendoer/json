@@ -17,6 +17,7 @@ JSON for PHP
 * public static function numberToString($number = NULL)
 * public static function testValidity($object)
 * public function toJSONArray($names = NULL)
+* public function toStdClass()
 * public function write()
 * public function __toString()
 
@@ -30,5 +31,6 @@ JSON for PHP
 * public function keys()
 * public function toJSONObject($names)
 * public static function testValidity($object)
+* public function toArray()
 * public function write()
 * public function __toString()
