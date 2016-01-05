@@ -309,6 +309,16 @@ class JSONArray
 	}
 	
 	/**
+	 * returns the JSONArray as a PHP-style array.
+	 * 
+	 * @return The JSONArray as a regular array
+	 */
+	public function toArray()
+	{
+		return json_decode($this->write());
+	}
+	
+	/**
 	 * Write the contents of the JSONArray as JSON text to a writer. For
 	 * compactness, no whitespace is added.
 	 * <p>

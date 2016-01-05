@@ -490,6 +490,16 @@ class JSONObject
 	}
 	
 	/**
+	 * returns the JSONObject as a PHP-style StdClass object.
+	 * 
+	 * @return The JSONObject as a StdClass object
+	 */
+	public function toStdClass()
+	{
+		return json_decode($this->write());
+	}
+	
+	/**
 	 * Returns the contents of the JSONObject as a JSONString. For compactness, no whitespace is added.
 	 * <p>
 	 * Warning: This method assumes that the data structure is acyclical.
