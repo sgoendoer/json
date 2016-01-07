@@ -64,7 +64,7 @@ class JSONObject
 				{
 					$this->put($value, (string) $key);
 				}
-				elseif(gettype($value) == 'int' || gettype($value) == 'double')
+				elseif(gettype($value) == 'integer' || gettype($value) == 'double')
 				{
 					$this->put($value, (string) $key);
 				}
@@ -133,7 +133,7 @@ class JSONObject
 				{
 					$this->put($value, (string) $key);
 				}
-				elseif(gettype($value) == 'int' || gettype($value) == 'double')
+				elseif(gettype($value) == 'integer' || gettype($value) == 'double')
 				{
 					$this->put($value, (string) $key);
 				}
