@@ -139,7 +139,7 @@ class JSONObject
 				}
 				else
 				{
-					throw new JSONException('Value [' . self::quote($value) . ']is not a valid value');
+					throw new JSONException('Value [' . self::quote($value) . '] is not a valid value');
 				}
 			}
 		}
@@ -287,7 +287,10 @@ class JSONObject
 	 */
 	public static function quote($string)
 	{
-		// TODO escape all the chars
+		$string = str_replace('\\', '\\\\', $string);
+		$string = str_replace('/', '\/', $string);
+		$string = str_replace('"', '\"', $string);
+		
 		return $string;
 	}
 	
