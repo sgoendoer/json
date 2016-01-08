@@ -18,6 +18,10 @@ class JSONObjectUnitTest extends PHPUnit_Framework_TestCase
 		
 		$this->assertEquals(json_decode($jsonStringString), (new JSONObject($jsonStringString))->toStdClass());
 		$this->assertEquals(json_decode($jsonStringInteger), (new JSONObject($jsonStringInteger))->toStdClass());
+		
+		$this->assertEquals('\\\n', JSONObject::quote('\n'));
+		$this->assertEquals('\/', JSONObject::quote('/'));
+		$this->assertEquals('\\\\', JSONObject::quote('\\'));
 	}
 }
 
