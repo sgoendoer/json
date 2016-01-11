@@ -116,21 +116,21 @@ class JSONArray
 	/**
 	 * Get the value associated with a key.
 	 *
-	 * @param key A key string.
+	 * @param key A key as an integer
 	 * @return The object associated with the key.
 	 */
 	public function get($key)
 	{
-		if($key === NULL || $key == '')
+		if(($key === NULL) || $key === '')
 		{
 			throw new JSONException('Null key.');
 		}
 		
-		$object = $this->opt((string) $key);
+		$object = $this->opt($key);
 		
 		if($object == NULL)
 		{
-			throw new JSONException('JSONArray[' . self::quote($key) . '] not found.');
+			throw new JSONException('JSONArray[' . JSONObject::quote($key) . '] not found.');
 		}
 		
 		return $object;
@@ -153,7 +153,7 @@ class JSONArray
 	public function put($value, $key = NULL)
 	{
 		// disallow non-integer keys
-		if($key != NULL && gettype($key) != 'integer')
+		if($key !== NULL && gettype($key) != 'integer')
 		{
 			throw new JSONException('Key value must be an integer value');
 		}
@@ -167,19 +167,12 @@ class JSONArray
 			$value = new JSONArray($value);
 		}
 		
-		if($value !== NULL) // "", 0, 0.0, false, etc evaluate to NULL
-		{
-			$this->testValidity($value);
-			
-			if($key != NULL && in_array($key, $this->map))
-				$this->map[$key] = $value;
-			else
-				$this->map[] = $value;
-		}
+		$this->testValidity($value);
+		
+		if($key != NULL && in_array($key, $this->map))
+			$this->map[$key] = $value;
 		else
-		{
-			throw new JSONException('Null value');
-		}
+			$this->map[] = $value;
 		
 		return $this;
 	}
@@ -199,7 +192,7 @@ class JSONArray
 	 */
 	public function opt($key)
 	{
-		if($key == NULL || $key == '' || !array_key_exists($key, $this->map))
+		if($key === NULL || $key === '' || !array_key_exists($key, $this->map))
 		{
 			return NULL;
 		}
@@ -337,7 +330,7 @@ class JSONArray
 			elseif(gettype($value) == 'boolean')
 				$returnstring .= (($value) ? 'true' : 'false');
 			elseif(gettype($value) == 'NULL')
-				$returnstring .= 'NULL';
+				$returnstring .= 'null';
 			elseif(gettype($value) == 'string')
 				$returnstring .= '"' . $value . '"';
 			else
