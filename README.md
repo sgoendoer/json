@@ -6,7 +6,7 @@ JSON for PHP
 
 * public function __construct($param = NULL, $keys = NULL)
 * public function get($key)
-* public function put($value, $key)
+* public function put($key, $value)
 * public function opt($key)
 * public function has($key)
 * public function remove($key)
