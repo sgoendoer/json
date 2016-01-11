@@ -3,6 +3,13 @@
 use sgoendoer\json\JSONObject;
 use sgoendoer\json\JSONException;
 
+/**
+ * PHP JSONArray
+ * version 20160111
+ *
+ * author: Sebastian Goendoer
+ * copyright: Sebastian Goendoer <sebastian.goendoer@rwth-aachen.de>
+ */
 class JSONArray
 {
 	/**
@@ -19,10 +26,8 @@ class JSONArray
 	{
 		$this->map = array();
 		
-		if($param == NULL)
-		{
-			
-		}
+		if($param === NULL)
+		{}
 		// if param == JSON Object => create JSONArray from JSONObjects parameters
 		elseif($param instanceof JSONObject)
 		{
@@ -113,7 +118,6 @@ class JSONArray
 	 *
 	 * @param key A key string.
 	 * @return The object associated with the key.
-	 * @throws JSONException if the key is not found.
 	 */
 	public function get($key)
 	{
@@ -145,7 +149,6 @@ class JSONArray
 	 * @param value The value to put
 	 * @param key An optional key
 	 * @return this
-	 * @throws JSONException If the value is not a valid value
 	 */
 	public function put($value, $key = NULL)
 	{
@@ -243,7 +246,6 @@ class JSONArray
 	 * @param names An array containing a list of key strings. These will be paired with the values. If $names contains
 	 * less values than the source JSONArray, remaining values will be ommitted.
 	 * @return A JSONObject, or null if there are no names or if this JSONArray has no values.
-	 * @throws JSONException If any of the names are null.
 	 */
 	public function toJSONObject($names)
 	{
@@ -269,7 +271,6 @@ class JSONArray
 	 * Throw an exception if the object is not a valid JSON value
 	 *
 	 * @param object The object to test.
-	 * @throws JSONException If the object is not a valid JSON value
 	 */
 	public static function testValidity($object)
 	{
@@ -319,13 +320,9 @@ class JSONArray
 	}
 	
 	/**
-	 * Write the contents of the JSONArray as JSON text to a writer. For
-	 * compactness, no whitespace is added.
-	 * <p>
-	 * Warning: This method assumes that the data structure is acyclical.
+	 * Write the contents of the JSONArray to a string
 	 *
-	 * @return The writer.
-	 * @throws JSONException
+	 * @return string
 	 */
 	public function write()
 	{
@@ -362,6 +359,7 @@ class JSONArray
 		}
 		catch (\Exception $e)
 		{
+			// __toString must not throw any exceptions!
 			//die($e->getMessage());
 		}
 	}

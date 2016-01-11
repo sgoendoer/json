@@ -3,6 +3,13 @@
 use sgoendoer\json\JSONArray;
 use sgoendoer\json\JSONException;
 
+/**
+ * PHP JSONObject
+ * version 20160111
+ *
+ * author: Sebastian Goendoer
+ * copyright: Sebastian Goendoer <sebastian.goendoer@rwth-aachen.de>
+ */
 class JSONObject
 {
 	/**
@@ -15,21 +22,20 @@ class JSONObject
 	 * 
 	 * @param $param The parameter to create a JSONObject from.
 	 * @param $keys An optional array of keys to use for JSONObject creation
-	 * @throws JSONException if the provided parameter is not a valid value.
 	 */
 	public function __construct($param = NULL, $keys = NULL)
 	{
 		$this->map = array();
 		
 		// if param == NULL => new empty object
-		if($param == NULL)
+		if($param === NULL)
 		{}
 		// if param == JSON Object => create copy
 		elseif($param instanceof JSONObject)
 		{
 			foreach($param->keys() as $key)
 			{
-				$this->put($param->get((string) $key), (string) $key);
+				$this->put((string) $key, $param->get((string) $key));
 			}
 		}
 		// if param == JSONArray => create JSONObject
@@ -40,7 +46,7 @@ class JSONObject
 			
 			foreach($keys as $key)
 			{
-				$this->put($param->opt($key), (string) $key);
+				$this->put((string) $key, $param->opt($key));
 			}
 		}
 		// if param == assoc array => create JSONObject
@@ -50,27 +56,27 @@ class JSONObject
 			{
 				if(gettype($value) == 'string')
 				{
-					$this->put($value, (string) $key);
+					$this->put((string) $key, $value);
 				}
 				elseif(gettype($value) == 'object')
 				{
-					$this->put(new JSONObject($value), (string) $key);
+					$this->put((string) $key, new JSONObject($value));
 				}
 				elseif(gettype($value) == 'array')
 				{
-					$this->put(new JSONArray($value), (string) $key);
+					$this->put((string) $key, new JSONArray($value));
 				}
-				elseif(gettype($value) == 'bool')
+				elseif(gettype($value) == 'boolean')
 				{
-					$this->put($value, (string) $key);
+					$this->put((string) $key, $value);
 				}
 				elseif(gettype($value) == 'integer' || gettype($value) == 'double')
 				{
-					$this->put($value, (string) $key);
+					$this->put((string) $key, $value);
 				}
 				else
 				{
-					throw new JSONException('Value [' . self::quote($value) . '] is not a valid value');
+					throw new JSONException('Value [' . self::quote($value) . '|' . gettype($value) . '] is not a valid value');
 				}
 			}
 		}
@@ -90,15 +96,15 @@ class JSONObject
 						
 						if(gettype($value) == 'object')
 						{
-							$this->put(new JSONObject($value), (string) $key);
+							$this->put((string) $key, new JSONObject($value));
 						}
 						elseif(gettype($value) == 'array')
 						{
-							$this->put(new JSONArray($value), (string) $key);
+							$this->put((string) $key, new JSONArray($value));
 						}
 						else
 						{
-							$this->put($value, (string) $key);
+							$this->put((string) $key, $value);
 						}
 					}
 				}
@@ -119,27 +125,27 @@ class JSONObject
 			{
 				if(gettype($value) == 'string')
 				{
-					$this->put($value, (string) $key);
+					$this->put((string) $key, $value);
 				}
 				elseif(gettype($value) == 'object')
 				{
-					$this->put(new JSONObject($value), (string) $key);
+					$this->put((string) $key, new JSONObject($value));
 				}
 				elseif(gettype($value) == 'array')
 				{
-					$this->put(new JSONArray($value), (string) $key);
+					$this->put((string) $key, new JSONArray($value));
 				}
-				elseif(gettype($value) == 'bool')
+				elseif(gettype($value) == 'boolean')
 				{
-					$this->put($value, (string) $key);
+					$this->put((string) $key, $value);
 				}
 				elseif(gettype($value) == 'integer' || gettype($value) == 'double')
 				{
-					$this->put($value, (string) $key);
+					$this->put((string) $key, $value);
 				}
 				else
 				{
-					throw new JSONException('Value [' . self::quote($value) . '] is not a valid value');
+					throw new JSONException('Value [' . self::quote($value) . '|' . gettype($value) . '] is not a valid value');
 				}
 			}
 		}
@@ -150,7 +156,6 @@ class JSONObject
 	 *
 	 * @param key A key string.
 	 * @return The object associated with the key.
-	 * @throws JSONException if the key is not found.
 	 */
 	public function get($key)
 	{
@@ -179,12 +184,11 @@ class JSONObject
 	/**
 	 * Put a key/value pair in the JSONObject.
 	 *
-	 * @param value A boolean which is the value.
 	 * @param key A key string.
+	 * @param value A boolean which is the value.
 	 * @return this.
-	 * @throws JSONException If the key is null or the value is not a valid value
 	 */
-	public function put($value, $key)
+	public function put($key, $value)
 	{
 		if(gettype($value) == 'object' && !($value instanceof JSONObject) && !($value instanceof JSONArray))
 		{
@@ -333,15 +337,10 @@ class JSONObject
 	/**
 	 * Make a JSON text of an Object value. If the value is an array, then a JSONArray will be made from it and its
 	 * write() method will be called. If the value is an associative array or an object, then a JSONObject will be made 
-	 * from it and its write() method will be called. If the value is an object, the value's toString method will be 
-	 * called, and the result will be quoted.
-	 * <p>
-	 * Warning: This method assumes that the data structure is acyclical.
+	 * from it and its write() method will be called.
 	 *
 	 * @param value The value to be serialized.
-	 * @return a printable, displayable, transmittable representation of the object, beginning with <code>{</code>&nbsp;
-	 * <small>(left brace)</small> and ending with <code>}</code>&nbsp;<small>(right brace)</small>.
-	 * @throws JSONException If the value cannot be coerced to a string value.
+	 * @return string
 	 */
 	public static function valueToString($value)
 	{
@@ -400,7 +399,7 @@ class JSONObject
 	 */
 	public static function numberToString($number = NULL)
 	{
-		if($number == NULL)
+		if($number === NULL)
 		{
 			throw new JSONException('Null pointer');
 		}
@@ -426,18 +425,17 @@ class JSONObject
 	}
 	
 	/**
-	 * Throw an exception if the object is not a valid JSON value
+	 * Throw an exception if $value is not a valid JSON value
 	 *
-	 * @param object The object to test.
-	 * @throws JSONException If the object is not a valid JSON value
+	 * @param $value The value to test.
 	 */
-	public static function testValidity($object)
+	public static function testValidity($value)
 	{
-		switch(gettype($object))
+		switch(gettype($value))
 		{
 			case 'integer':
 			case 'double': // is returned when $object is a float
-				if(is_nan($object) || is_infinite($object))
+				if(is_nan($value) || is_infinite($value))
 					throw new JSONException('JSON does not allow non-finite numbers.');
 			break;
 			
@@ -452,18 +450,18 @@ class JSONObject
 			break;
 			
 			case 'array':
-				throw new JSONException('JSON does not allow values of type ' . gettype($object));
+				throw new JSONException('JSON does not allow values of type ' . gettype($value));
 			break;
 			
 			case 'object':
-				if(!($object instanceof JSONObject) && !($object instanceof JSONArray))
-					throw new JSONException('JSON does not allow values of type ' . gettype($object));
+				if(!($value instanceof JSONObject) && !($value instanceof JSONArray))
+					throw new JSONException('JSON does not allow values of type ' . gettype($value));
 			break;
 			
 			case 'resource':
 			case 'unknown type':
 			default:
-				throw new JSONException('JSON does not allow values of type ' . gettype($object));
+				throw new JSONException('JSON does not allow values of type ' . gettype($value));
 			break;
 		}
 	}
@@ -471,9 +469,8 @@ class JSONObject
 	/**
 	 * Produce a JSONArray containing the values of the members of this JSONObject.
 	 *
-	 * @param names A JSONArray containing a list of key strings. This determines the sequence of the values in the result.
+	 * @param $names An array containing a list of key strings. This determines the sequence of the values in the result.
 	 * @return A JSONArray of values.
-	 * @throws JSONException If any of the values are non-finite numbers.
 	 */
 	public function toJSONArray($names = NULL)
 	{
@@ -504,8 +501,6 @@ class JSONObject
 	
 	/**
 	 * Returns the contents of the JSONObject as a JSONString. For compactness, no whitespace is added.
-	 * <p>
-	 * Warning: This method assumes that the data structure is acyclical.
 	 *
 	 * @return string
 	 */
@@ -541,8 +536,6 @@ class JSONObject
 	/**
 	 * Returns the contents of the JSONObject as a JSONString. For compactness, no whitespace is added.
 	 * In case an Exception is thrown, the execution is halted.
-	 * <p>
-	 * Warning: This method assumes that the data structure is acyclical.
 	 *
 	 * @return string
 	 */
