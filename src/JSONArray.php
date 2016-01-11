@@ -121,12 +121,12 @@ class JSONArray
 	 */
 	public function get($key)
 	{
-		if($key == NULL || $key == '')
+		if($key === NULL || $key == '')
 		{
 			throw new JSONException('Null key.');
 		}
 		
-		$object = $this->opt($key);
+		$object = $this->opt((string) $key);
 		
 		if($object == NULL)
 		{
@@ -337,7 +337,7 @@ class JSONArray
 			elseif(gettype($value) == 'boolean')
 				$returnstring .= (($value) ? 'true' : 'false');
 			elseif(gettype($value) == 'NULL')
-				$returnstring .= 'null';
+				$returnstring .= 'NULL';
 			elseif(gettype($value) == 'string')
 				$returnstring .= '"' . $value . '"';
 			else

@@ -143,6 +143,10 @@ class JSONObject
 				{
 					$this->put((string) $key, $value);
 				}
+				elseif(gettype($value) == 'NULL')
+				{
+					$this->put((string) $key, null);
+				}
 				else
 				{
 					throw new JSONException('Value [' . self::quote($value) . '|' . gettype($value) . '] is not a valid value');
@@ -197,15 +201,8 @@ class JSONObject
 		if($key == '' || $key == NULL)
 			throw new JSONException("Null key.");
 		
-		if($value !== NULL) // "", 0, 0.0, false, etc evaluate to NULL
-		{
-			$this->testValidity($value);
-			$this->map[$key] = $value;
-		}
-		else
-		{
-			$this->remove($key);
-		}
+		$this->testValidity($value);
+		$this->map[$key] = $value;
 		
 		return $this;
 	}
@@ -506,6 +503,7 @@ class JSONObject
 	 */
 	public function write()
 	{
+		//var_dump($this->map);die();
 		$returnstring = '{';
 		
 		foreach($this->map as $key => $value)
