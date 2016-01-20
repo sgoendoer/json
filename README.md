@@ -2,6 +2,19 @@
 
 JSON for PHP
 
+## Usage
+
+    use sgoendoer\json;
+    
+    $jsonObject = new JSONObject();
+    
+    $jsonObject->put("key", "value");
+    $jsonObject->put("array", new JSONArray());
+    $jsonObject->put("object", new JSONObject("{"a", 1}"));
+    
+    $jsonObject->get("key");
+    $jsonObject->write();
+
 ## JSONObject
 
 * public function __construct($param = NULL, $keys = NULL)
