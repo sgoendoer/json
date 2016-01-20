@@ -19,7 +19,7 @@ or configure your composer.json accordingly
     
     $jsonObject->put("key", "value");
     $jsonObject->put("array", new JSONArray());
-    $jsonObject->put("object", new JSONObject("{"a", 1}"));
+    $jsonObject->put("object", new JSONObject('{"a", 1}'));
     
     echo $jsonObject->get("key");
     echo $jsonObject->write();
