@@ -2,9 +2,18 @@
 
 JSON for PHP
 
+## Setup
+
+    ./composer install sgoendoer/json
+
+or configure your composer.json accordingly
+
+    "require" : { "sgoendoer/json": "0.2.*" }
+
 ## Usage
 
-    use sgoendoer\json;
+    use sgoendoer\json\JSONObject;
+    use sgoendoer\json\JSONArray;
     
     $jsonObject = new JSONObject();
     
@@ -12,8 +21,12 @@ JSON for PHP
     $jsonObject->put("array", new JSONArray());
     $jsonObject->put("object", new JSONObject("{"a", 1}"));
     
-    $jsonObject->get("key");
-    $jsonObject->write();
+    echo $jsonObject->get("key");
+    echo $jsonObject->write();
+    
+    $phpStyleJSON = $jsonObject->toStdClass();
+    echo $phpStyleJSON->key;
+    echo json_encode($phpStyleJSON);
 
 ## JSONObject
 
