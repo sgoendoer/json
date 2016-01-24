@@ -12,6 +12,7 @@ or configure your composer.json accordingly
 
 ## Usage
 
+```php
     use sgoendoer\json\JSONObject;
     use sgoendoer\json\JSONArray;
     
@@ -27,6 +28,7 @@ or configure your composer.json accordingly
     $phpStyleJSON = $jsonObject->toStdClass();
     echo $phpStyleJSON->key;
     echo json_encode($phpStyleJSON);
+```
 
 ## JSONObject
 
