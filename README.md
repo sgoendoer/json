@@ -4,7 +4,7 @@ JSON for PHP
 
 ## Setup
 
-    ./composer install sgoendoer/json
+    ./composer require sgoendoer/json
 
 or configure your composer.json accordingly
 
@@ -62,3 +62,8 @@ or configure your composer.json accordingly
 * public function toArray()
 * public function write()
 * public function __toString()
+
+## JSONTools
+
+* public static function getJSONErrorAsString()
+* public static function containsValidJSON($string)
